@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pereyra Investments</title>
+    <link rel="stylesheet" href="estilos.css">
+
+.encabezado {
+    background-color: #B50000;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-bottom: 4px solid #001f40;
+    border-top: 4px solid #001f40;
+}
+
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.tarjeta-cuenta {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-cuenta h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.detalle-cuenta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.detalle-cuenta img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.detalle-cuenta h3 {
+    margin: 0;
+    font-size: 1em;
+}
+
+.detalle-cuenta p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.boton-ingresar {
+    background-color: transparent;
+    border: 2px solid #B50000;
+    color: #B50000;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.boton-ingresar:hover {
+    background-color: #B50000;
+    color: white;
+}
+  
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Pereyra investments & Asoc.</h1>
+    </header>
+
+    <main class="contenedor-principal">
+        <div class="tarjeta-cuenta">
+            <div class="info-cuenta">
+                <h2>Estado de cuenta</h2>
+                <div class="detalle-cuenta">
+                    <img src="bandera-argentina.webp" alt="Bandera de Argentina">
+                    <div>
+                        <h3>Cuenta de inversión de Argentina</h3>
+                        <p>Saldo de la cuenta: AR$0,00</p>
+                    </div>
+                </div>
+            </div>
+            <button class="boton-ingresar">Ingresar</button>
+        </div>
+
+        <div class="tarjeta-cuenta">
+            <div class="info-cuenta">
+                <h2>Estado de cuenta</h2>
+                <div class="detalle-cuenta">
+                    <img src="bandera-eeuu.webp" alt="Bandera de Estados Unidos">
+                    <div>
+                        <h3>Cuenta de inversión de Estados Unidos</h3>
+                        <p>Saldo de la cuenta: US$0,00</p>
+                    </div>
+                </div>
+            </div>
+            <button class="boton-ingresar">Ingresar</button>
+        </div>
+    </main>
+</body>
+</html>
