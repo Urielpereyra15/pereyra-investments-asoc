@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuenta de Argentina</title>
     
-    <style>
-        /* Estilos generales */
+<style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -14,29 +13,25 @@
             padding: 0;
         }
 
-        /* Estilos del encabezado */
         .encabezado {
             background-color: #B50000;
-            color: white;
+            color: black;
             text-align: center;
             padding: 25px;
-            border-bottom: 4px solid #001f40;
-            border-top: 4px solid #001f40;
         }
 
         .encabezado h1 {
             margin: 0;
-            font-size: 2.2em;
+            font-size: 2.5em;
+            font-family: 'Times New Roman', Times, serif;
         }
 
-        /* Contenedor principal para centrar el contenido */
         .main-container {
-            max-width: 900px; /* Aumentado para el nuevo diseño */
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* Secciones principales de la página */
         .seccion-card {
             background-color: #e0e0e0;
             border-radius: 10px;
@@ -53,15 +48,13 @@
             color: #333;
         }
 
-        /* Contenedor del Portafolio y Activos */
         .portafolio-activo-container {
             display: flex;
             gap: 20px;
         }
 
-        /* Estilos de la tabla de portafolio */
         .tabla-portafolio {
-            width: 70%; /* Ocupa el 70% del espacio */
+            width: 70%;
             border-collapse: collapse;
         }
 
@@ -77,14 +70,13 @@
         }
 
         .fila-verde {
-            background-color: #e8f5e9; /* Verde claro */
+            background-color: #e8f5e9;
         }
         
         .fila-roja {
-            background-color: #ffebee; /* Rojo claro */
+            background-color: #ffebee;
         }
 
-        /* Estilos de la tabla de movimientos */
         .tabla-movimientos {
             width: 100%;
             border-collapse: collapse;
@@ -102,9 +94,8 @@
             font-weight: bold;
         }
 
-        /* Estilos de los activos */
         .activos-card {
-            width: 30%; /* Ocupa el 30% del espacio */
+            width: 30%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -127,7 +118,6 @@
             margin-bottom: 5px;
         }
 
-        /* Botón "Ver más" */
         .ver-mas-btn {
             display: block;
             width: 150px;
@@ -156,7 +146,6 @@
             height: 30px;
         }
 
-        /* Media queries para responsividad */
         @media (max-width: 600px) {
             .portafolio-activo-container {
                 flex-direction: column;
@@ -248,7 +237,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>0000000008</td>
+                        <td></td> /* Media queries para responsividad */
                         <td>Dividendos</td>
                         <td>AR$</td>
                         <td>01/04/2025</td>
