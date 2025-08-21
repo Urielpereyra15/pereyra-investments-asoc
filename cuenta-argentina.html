@@ -359,6 +359,7 @@
                 localStorage.setItem('portafolioData', JSON.stringify(portafolioData));
                 localStorage.setItem('movimientosData', JSON.stringify(movimientosData));
                 localStorage.setItem('movimientoId', movimientoId);
+                localStorage.setItem('movimientosLibres', JSON.stringify(movimientosLibres));
             };
 
             // Función para cargar los datos desde localStorage
@@ -366,6 +367,7 @@
                 const portafolioGuardado = localStorage.getItem('portafolioData');
                 const movimientosGuardados = localStorage.getItem('movimientosData');
                 const idGuardado = localStorage.getItem('movimientoId');
+                const libresGuardados = localStorage.getItem('movimientosLibres');
                 
                 if (portafolioGuardado) {
                     portafolioData = JSON.parse(portafolioGuardado);
@@ -376,11 +378,15 @@
                 if (idGuardado) {
                     movimientoId = parseInt(idGuardado, 10);
                 }
+                if (libresGuardados) {
+                    movimientosLibres = JSON.parse(libresGuardados);
+                }
             };
             
             let movimientosData = [];
             let movimientoId = 1;
             let portafolioData = [];
+            let movimientosLibres = []; // Nuevo array para los IDs borrados
 
             // Cargar los datos al inicio de la página
             cargarDatos();
@@ -460,8 +466,17 @@
                 const precioTotal = parseFloat(document.getElementById('precio-total').value);
                 const fecha = document.getElementById('fecha').value;
 
+                let idNuevo;
+                if (movimientosLibres.length > 0) {
+                    // Si hay IDs libres, toma el más bajo y lo elimina del array
+                    idNuevo = movimientosLibres.shift();
+                } else {
+                    // Si no hay IDs libres, usa el siguiente número consecutivo
+                    idNuevo = movimientoId++;
+                }
+
                 const nuevoMovimiento = {
-                    id: movimientoId++,
+                    id: idNuevo,
                     fecha: fecha,
                     cantidad: cantidad,
                     precioUnitario: precioUnitario,
@@ -496,6 +511,10 @@
                     const fila = evento.target.closest('tr');
                     const idAEliminar = parseInt(fila.dataset.id, 10);
                     
+                    // Agregar el ID borrado al array de IDs libres
+                    movimientosLibres.push(idAEliminar);
+                    movimientosLibres.sort((a, b) => a - b); // Opcional: ordenar para usar siempre el más bajo
+
                     // Filtrar el array para eliminar el movimiento
                     movimientosData = movimientosData.filter(movimiento => movimiento.id !== idAEliminar);
                     
