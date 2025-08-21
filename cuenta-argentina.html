@@ -168,63 +168,66 @@
     </header>
     
     <div class="main-container">
-
-        <div class="portafolio-activo-container">
-            <div class="seccion-card tabla-portafolio">
-                <h2 class="titulo-seccion">Portafolio</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Cantidad</th>
-                            <th>Variación diaria</th>
-                            <th>Último precio</th>
-                            <th>Rendimiento</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="fila-roja">
-                            <td>YPFD<br><span style="font-size:0.8em;">YPF</span></td>
-                            <td>1</td>
-                            <td>-1,03%</td>
-                            <td>$100</td>
-                            <td>-$90</td>
-                        </tr>
-                        <tr class="fila-verde">
-                            <td>MELI<br><span style="font-size:0.8em;">Mercado Libre</span></td>
-                            <td>10</td>
-                            <td>1,08%</td>
-                            <td>$1.000</td>
-                            <td>$900</td>
-                        </tr>
-                        <tr class="fila-roja">
-                            <td>TSLA<br><span style="font-size:0.8em;">Tesla</span></td>
-                            <td>100</td>
-                            <td>-1,03%</td>
-                            <td>$1.000,09</td>
-                            <td>-$0,08</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="seccion-card activos-card">
-                <h2 class="titulo-seccion">Activos</h2>
-                <img src="grafico-activos.png" alt="Gráfico de Activos" class="grafico-activos">
-                <h3 style="margin: 10px 0;">Mis tenencias</h3>
-                <ul class="lista-tenencias">
-                    <li>YPFD %62,5</li>
-                    <li>MELI %25</li>
-                    <li>TSLA %12,5</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="seccion-card">
-            <h2 class="titulo-seccion">Movimientos</h2>
-            <table class="tabla-movimientos">
-            <thead>
-            <tr>
+    <div class="portafolio-activo-container">
+    <div class="seccion-card tabla-portafolio">
+        <h2 class="titulo-seccion">Portafolio</h2>
+        <table>
+        <thead>
+        <tr>
+            <th>Acción</th>
+            <th>Cantidad</th>
+            <th>Variación diaria</th>
+            <th>Precio de compra</th>
+            <th>Último precio</th>
+            <th>Rendimiento</th>
+        </tr>
+        </thead>
+        <tbody id="portafolio-body">
+        <tr class="fila-roja">
+            <td>YPFD<br><span style="font-size:0.8em;">YPF</span></td>
+            <td>1</td>
+            <td>-1,03%</td>
+            <td class="precio-compra">$190</td>
+            <td class="ultimo-precio">$100</td>
+            <td>-$90</td>
+        </tr>
+        <tr class="fila-verde">
+            <td>MELI<br><span style="font-size:0.8em;">Mercado Libre</span></td>
+            <td>10</td>
+            <td>1,08%</td>
+            <td class="precio-compra">$100</td>
+            <td class="ultimo-precio">$1.000</td>
+            <td>$900</td>
+        </tr>
+        <tr class="fila-roja">
+            <td>TSLA<br><span style="font-size:0.8em;">Tesla</span></td>
+            <td>100</td>
+            <td>-1,03%</td>
+            <td class="precio-compra">$1.000,09</td>
+            <td class="ultimo-precio">$1.000,01</td>
+            <td>-$0,08</td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    
+    <div class="seccion-card activos-card">
+        <h2 class="titulo-seccion">Activos</h2>
+        <img src="grafico-activos.png" alt="Gráfico de Activos" class="grafico-activos">
+        <h3 style="margin: 10px 0;">Mis tenencias</h3>
+        <ul class="lista-tenencias">
+            <li>YPFD %62,5</li>
+            <li>MELI %25</li>
+            <li>TSLA %12,5</li>
+        </ul>
+    </div>
+    </div>
+    
+    <div class="seccion-card">
+        <h2 class="titulo-seccion">Movimientos</h2>
+        <table class="tabla-movimientos">
+        <thead>
+        <tr>
             <th>Nro. de movimiento</th>
             <th>Tipo de movimiento</th>
             <th>Cuenta</th>
@@ -236,20 +239,52 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-            <td>0</td> /*Numero de movimiento */
-            <td>Dividendos</td>
-            <td>AR$</td>
-            <td>01/04/2025</td>
+        <tr>
             <td>0</td>
-            <td>Terminada</td>
-            <td>$0,00</td>
-            <td>$0,00</td>
+            <td>Concepto</td>
+            <td>Cuenta</td>
+            <td>Fecha</td>
+            <td>Cantidad</td>
+            <td>Estado del movimiento</td>
+            <td>P/C</td>
+            <td>P/T</td>
         </tr>
         </tbody>
         </table>
-            <a href="#" class="ver-mas-btn">Ver más</a>
-        </div>
+            <a href="movimientos.html" class="ver-mas-btn">Ver más</a>
     </div>
+    </div>
+
+    <script>
+        // Obtener todas las filas del portafolio
+        const filas = document.querySelectorAll('#portafolio-body tr');
+
+        // Recorrer cada fila
+        filas.forEach(fila => {
+            // Obtener los precios de las celdas
+            const precioCompraTexto = fila.querySelector('.precio-compra').textContent;
+            const ultimoPrecioTexto = fila.querySelector('.ultimo-precio').textContent;
+
+            // Función para limpiar el texto y convertirlo a número
+            function limpiarYConvertir(texto) {
+                // Eliminar el símbolo '$'
+                let valor = texto.replace('$', '');
+                // Reemplazar la coma por punto para que parseFloat funcione
+                valor = valor.replace(',', '.');
+                // Convertir a número flotante
+                return parseFloat(valor);
+            }
+
+            const precioCompra = limpiarYConvertir(precioCompraTexto);
+            const ultimoPrecio = limpiarYConvertir(ultimoPrecioTexto);
+
+            // Comparar los precios y aplicar la clase de color
+            if (ultimoPrecio < precioCompra) {
+                fila.classList.add('fila-roja');
+            } else {
+                fila.classList.add('fila-verde');
+            }
+        });
+    </script>
 </body>
 </html>
