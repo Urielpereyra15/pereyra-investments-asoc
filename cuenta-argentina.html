@@ -261,6 +261,31 @@
         </ul>
     </div>
     </div>
+
+    <div class="seccion-card form-agregar-activo">
+        <h2 class="titulo-seccion">Agregar Activo</h2>
+        <form id="form-nuevo-activo">
+            <label for="accion">Acción:</label>
+            <input type="text" id="accion" name="accion" required>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" required>
+            
+            <label for="precio-unitario">Precio Unitario (Compra):</label>
+            <input type="number" step="0.01" id="precio-unitario" name="precio-unitario" required>
+            
+            <label for="ultimo-precio-form">Último Precio:</label>
+            <input type="number" step="0.01" id="ultimo-precio-form" name="ultimo-precio-form" required>
+            
+            <label for="precio-total">Precio Total:</label>
+            <input type="number" step="0.01" id="precio-total" name="precio-total" required>
+            
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+            
+            <button type="submit" class="btn-agregar-activo">Agregar Activo</button>
+        </form>
+    </div>    
     
     <div class="seccion-card">
         <h2 class="titulo-seccion">Movimientos</h2>
