@@ -163,7 +163,7 @@
 <body>
 
     <header class="encabezado">
-        <img src="icono-menu.png" alt="Menú" class="barra-menu">
+        <img src="img/icono-menu.png" alt="Menú" class="barra-menu">
         <h1>Pereyra investments<br>& Asoc.</h1>
     </header>
     
@@ -279,10 +279,12 @@
             const ultimoPrecio = limpiarYConvertir(ultimoPrecioTexto);
 
             // Comparar los precios y aplicar la clase de color
-            if (ultimoPrecio < precioCompra) {
-                fila.classList.add('fila-roja');
-            } else {
+            if (ultimoPrecio >= precioCompra) { // Cambio aquí: si es mayor o igual, es ganancia
                 fila.classList.add('fila-verde');
+                fila.classList.remove('fila-roja');
+            } else {
+                fila.classList.add('fila-roja');
+                fila.classList.remove('fila-verde');
             }
         });
     </script>
