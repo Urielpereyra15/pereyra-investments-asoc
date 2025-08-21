@@ -256,35 +256,28 @@
     </div>
 
     <script>
-        // Obtener todas las filas del portafolio
         const filas = document.querySelectorAll('#portafolio-body tr');
 
-        // Recorrer cada fila
         filas.forEach(fila => {
-            // Obtener los precios de las celdas
             const precioCompraTexto = fila.querySelector('.precio-compra').textContent;
             const ultimoPrecioTexto = fila.querySelector('.ultimo-precio').textContent;
 
-            // Función para limpiar el texto y convertirlo a número
+            // Esta función fue mejorada para manejar tanto puntos como comas
             function limpiarYConvertir(texto) {
-                // Eliminar el símbolo '$'
-                let valor = texto.replace('$', '');
-                // Reemplazar la coma por punto para que parseFloat funcione
-                valor = valor.replace(',', '.');
-                // Convertir a número flotante
-                return parseFloat(valor);
+                // Elimina el símbolo '$' y los puntos de miles, luego reemplaza la coma por punto.
+                return parseFloat(texto.replace('$', '').replace(/\./g, '').replace(',', '.'));
             }
 
             const precioCompra = limpiarYConvertir(precioCompraTexto);
             const ultimoPrecio = limpiarYConvertir(ultimoPrecioTexto);
 
-            // Comparar los precios y aplicar la clase de color
-            if (ultimoPrecio >= precioCompra) { // Cambio aquí: si es mayor o igual, es ganancia
+            // Eliminar las clases existentes para que el script las aplique de nuevo
+            fila.classList.remove('fila-verde', 'fila-roja');
+
+            if (ultimoPrecio >= precioCompra) {
                 fila.classList.add('fila-verde');
-                fila.classList.remove('fila-roja');
             } else {
                 fila.classList.add('fila-roja');
-                fila.classList.remove('fila-verde');
             }
         });
     </script>
