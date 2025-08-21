@@ -341,14 +341,44 @@
             const portafolioBody = document.getElementById('portafolio-body');
             const movimientosBody = document.getElementById('movimientos-body');
 
-            let movimientosData = [];
-            let movimientoId = 0;
+            // Función para guardar los datos en localStorage
+            const guardarDatos = () => {
+                localStorage.setItem('portafolioData', JSON.stringify(datosIniciales));
+                localStorage.setItem('movimientosData', JSON.stringify(movimientosData));
+                localStorage.setItem('movimientoId', movimientoId);
+            };
 
-            const datosIniciales = [
-                { accion: 'YPFD', nombre: 'YPF', cantidad: 1, variacion: '-1,03%', precioCompra: 190, ultimoPrecio: 100 },
-                { accion: 'MELI', nombre: 'Mercado Libre', cantidad: 10, variacion: '1,08%', precioCompra: 100, ultimoPrecio: 1000 },
-                { accion: 'TSLA', nombre: 'Tesla', cantidad: 100, variacion: '-1,03%', precioCompra: 1000.09, ultimoPrecio: 1000.01 }
-            ];
+            // Función para cargar los datos desde localStorage
+            const cargarDatos = () => {
+                const portafolioGuardado = localStorage.getItem('portafolioData');
+                const movimientosGuardados = localStorage.getItem('movimientosData');
+                const idGuardado = localStorage.getItem('movimientoId');
+                
+                if (portafolioGuardado) {
+                    datosIniciales = JSON.parse(portafolioGuardado);
+                }
+                if (movimientosGuardados) {
+                    movimientosData = JSON.parse(movimientosGuardados);
+                }
+                if (idGuardado) {
+                    movimientoId = parseInt(idGuardado, 10);
+                }
+            };
+            
+            let movimientosData = [];
+            let movimientoId = 1;
+            let datosIniciales = [];
+
+            // Cargar los datos al inicio de la página
+            cargarDatos();
+
+            if (datosIniciales.length === 0) {
+                 datosIniciales = [
+                    { accion: 'YPFD', nombre: 'YPF', cantidad: 1, variacion: '-1,03%', precioCompra: 190, ultimoPrecio: 100 },
+                    { accion: 'MELI', nombre: 'Mercado Libre', cantidad: 10, variacion: '1,08%', precioCompra: 100, ultimoPrecio: 1000 },
+                    { accion: 'TSLA', nombre: 'Tesla', cantidad: 100, variacion: '-1,03%', precioCompra: 1000.09, ultimoPrecio: 1000.01 }
+                ];
+            }
 
             function renderizarPortafolio(datos) {
                 portafolioBody.innerHTML = '';
@@ -424,7 +454,7 @@
                     precioTotal: precioTotal
                 };
 
-                movimientosData.push(nuevoMovimiento);
+                movimientosData.unshift(nuevoMovimiento);
                 renderizarMovimientos();
 
                 const nuevoActivo = {
@@ -438,7 +468,14 @@
 
                 datosIniciales.push(nuevoActivo);
                 renderizarPortafolio(datosIniciales);
+                
+                // Guardar los datos después de cada cambio
+                guardarDatos();
 
+                form.reset();
+                modal.style.display = 'none';
+            });
+                
                 form.reset();
                 modal.style.display = 'none';
             });
