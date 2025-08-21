@@ -145,8 +145,8 @@
             width: 30px;
             height: 30px;
         }
-
-    .btn-agregar-activo {
+        
+        .btn-agregar-activo {
             display: block;
             width: 150px;
             margin: 10px auto;
@@ -230,7 +230,7 @@
         .modal-form button:hover {
             background-color: #8c0000;
         }
-
+        
         @media (max-width: 600px) {
             .portafolio-activo-container {
                 flex-direction: column;
@@ -253,119 +253,83 @@
     </header>
     
     <div class="main-container">
-    <div class="portafolio-activo-container">
-    <div class="seccion-card tabla-portafolio">
-        <h2 class="titulo-seccion">Portafolio</h2>
-        <table>
-        <thead>
-        <tr>
-            <th>Acción</th>
-            <th>Cantidad</th>
-            <th>Variación diaria</th>
-            <th>Precio de compra</th>
-            <th>Último precio</th>
-            <th>Rendimiento</th>
-        </tr>
-        </thead>
-        <tbody id="portafolio-body">
-        <tr class="fila-roja">
-            <td>YPFD<br><span style="font-size:0.8em;">YPF</span></td>
-            <td>1</td>
-            <td>-1,03%</td>
-            <td class="precio-compra">$190</td>
-            <td class="ultimo-precio">$100</td>
-            <td>-$90</td>
-        </tr>
-        <tr class="fila-verde">
-            <td>MELI<br><span style="font-size:0.8em;">Mercado Libre</span></td>
-            <td>10</td>
-            <td>1,08%</td>
-            <td class="precio-compra">$100</td>
-            <td class="ultimo-precio">$1.000</td>
-            <td>$900</td>
-        </tr>
-        <tr class="fila-roja">
-            <td>TSLA<br><span style="font-size:0.8em;">Tesla</span></td>
-            <td>100</td>
-            <td>-1,03%</td>
-            <td class="precio-compra">$1.000,09</td>
-            <td class="ultimo-precio">$1.000,01</td>
-            <td>-$0,08</td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
+        <div class="portafolio-activo-container">
+            <div class="seccion-card tabla-portafolio">
+                <h2 class="titulo-seccion">Portafolio</h2>
+                <table>
+                <thead>
+                <tr>
+                    <th>Acción</th>
+                    <th>Cantidad</th>
+                    <th>Variación diaria</th>
+                    <th>Precio de compra</th>
+                    <th>Último precio</th>
+                    <th>Rendimiento</th>
+                </tr>
+                </thead>
+                <tbody id="portafolio-body">
+                </tbody>
+                </table>
+                <button id="abrir-modal-btn" class="btn-agregar-activo">Agregar activo</button>
+            </div>
+            
+            <div class="seccion-card activos-card">
+                <h2 class="titulo-seccion">Activos</h2>
+                <img src="grafico-activos.png" alt="Gráfico de Activos" class="grafico-activos">
+                <h3 style="margin: 10px 0;">Mis tenencias</h3>
+                <ul class="lista-tenencias">
+                    <li>YPFD %62,5</li>
+                    <li>MELI %25</li>
+                    <li>TSLA %12,5</li>
+                </ul>
+            </div>
+        </div>
     
-    <div class="seccion-card activos-card">
-        <h2 class="titulo-seccion">Activos</h2>
-        <img src="grafico-activos.png" alt="Gráfico de Activos" class="grafico-activos">
-        <h3 style="margin: 10px 0;">Mis tenencias</h3>
-        <ul class="lista-tenencias">
-            <li>YPFD %62,5</li>
-            <li>MELI %25</li>
-            <li>TSLA %12,5</li>
-        </ul>
-    </div>
-    </div>    
-    
-    <div class="seccion-card">
-        <h2 class="titulo-seccion">Movimientos</h2>
-        <table class="tabla-movimientos">
-        <thead>
-        <tr>
-            <th>Nro. de movimiento</th>
-            <th>Tipo de movimiento</th>
-            <th>Cuenta</th>
-            <th>Fecha</th>
-            <th>Cantidad</th>
-            <th>Estado</th>
-            <th>Precio Unitario</th>
-            <th>Precio total</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>0</td>
-            <td>Concepto</td>
-            <td>Cuenta</td>
-            <td>Fecha</td>
-            <td>Cantidad</td>
-            <td>Estado del movimiento</td>
-            <td>P/C</td>
-            <td>P/T</td>
-        </tr>
-        </tbody>
-        </table>
-        <a href="movimientos.html" class="ver-mas-btn">Ver más</a>
-    </div>
+        <div class="seccion-card">
+            <h2 class="titulo-seccion">Movimientos</h2>
+            <table class="tabla-movimientos">
+            <thead>
+            <tr>
+                <th>Nro. de movimiento</th>
+                <th>Tipo de movimiento</th>
+                <th>Cuenta</th>
+                <th>Fecha</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Precio Unitario</th>
+                <th>Precio total</th>
+            </tr>
+            </thead>
+            <tbody id="movimientos-body">
+            </tbody>
+            </table>
+            <a href="movimientos.html" class="ver-mas-btn">Ver más</a>
+        </div>
     </div>
 
     <div id="modal-agregar-activo" class="modal-overlay">
-    <div class="modal-content">
-        <span class="modal-close-btn">&times;</span>
-        <h2 class="titulo-seccion">Agregar Activo</h2>
-        <form id="form-nuevo-activo" class="modal-form">
-            <label for="accion">Acción:</label>
-            <input type="text" id="accion" name="accion" required>
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h2 class="titulo-seccion">Agregar Activo</h2>
+            <form id="form-nuevo-activo" class="modal-form">
+                <label for="accion">Acción</label>
+                <input type="text" id="accion" name="accion" required>
 
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" required>
-            
-            <label for="precio-unitario">Precio Unitario (Compra):</label>
-            <input type="number" step="0.01" id="precio-unitario" name="precio-unitario" required>
-            
-            <label for="ultimo-precio-form">Último Precio:</label>
-            <input type="number" step="0.01" id="ultimo-precio-form" name="ultimo-precio-form" required>
-            
-            <label for="precio-total">Precio Total:</label>
-            <input type="number" step="0.01" id="precio-total" name="precio-total" required>
-            
-            <label for="fecha">Fecha:</label>
-            <input type="date" id="fecha" name="fecha" required>
-            
-            <button type="submit">Agregar Activo</button>
-        </form>
-    </div>
+                <label for="cantidad">Cantidad</label>
+                <input type="number" id="cantidad" name="cantidad" required>
+
+                <label for="precio-unitario">Precio Unitario</label>
+                <input type="number" step="0.01" id="precio-unitario" name="precio-unitario" required>
+
+                <label for="precio-total">Precio Total</label>
+                <input type="number" step="0.01" id="precio-total" name="precio-total" required>
+
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" name="fecha" required>
+                
+                <button type="submit">Agregar Activo</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -476,7 +440,7 @@
                 renderizarPortafolio(datosIniciales);
 
                 form.reset();
-                modal.style.display = 'none'; // Ocultar el modal después de enviar
+                modal.style.display = 'none';
             });
         });
     </script>
