@@ -93,6 +93,18 @@
             background-color: #d1d1d1;
             font-weight: bold;
         }
+        
+        .btn-eliminar {
+            background-color: transparent;
+            border: none;
+            color: #B50000;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .btn-eliminar:hover {
+            color: #8c0000;
+        }
 
         .activos-card {
             width: 30%;
@@ -298,6 +310,7 @@
                 <th>Estado</th>
                 <th>Precio Unitario</th>
                 <th>Precio total</th>
+                <th>Eliminar</th>
             </tr>
             </thead>
             <tbody id="movimientos-body">
@@ -343,7 +356,7 @@
 
             // Función para guardar los datos en localStorage
             const guardarDatos = () => {
-                localStorage.setItem('portafolioData', JSON.stringify(datosIniciales));
+                localStorage.setItem('portafolioData', JSON.stringify(portafolioData));
                 localStorage.setItem('movimientosData', JSON.stringify(movimientosData));
                 localStorage.setItem('movimientoId', movimientoId);
             };
@@ -355,7 +368,7 @@
                 const idGuardado = localStorage.getItem('movimientoId');
                 
                 if (portafolioGuardado) {
-                    datosIniciales = JSON.parse(portafolioGuardado);
+                    portafolioData = JSON.parse(portafolioGuardado);
                 }
                 if (movimientosGuardados) {
                     movimientosData = JSON.parse(movimientosGuardados);
@@ -367,13 +380,13 @@
             
             let movimientosData = [];
             let movimientoId = 1;
-            let datosIniciales = [];
+            let portafolioData = [];
 
             // Cargar los datos al inicio de la página
             cargarDatos();
 
-            if (datosIniciales.length === 0) {
-                 datosIniciales = [
+            if (portafolioData.length === 0) {
+                 portafolioData = [
                     { accion: 'YPFD', nombre: 'YPF', cantidad: 1, variacion: '-1,03%', precioCompra: 190, ultimoPrecio: 100 },
                     { accion: 'MELI', nombre: 'Mercado Libre', cantidad: 10, variacion: '1,08%', precioCompra: 100, ultimoPrecio: 1000 },
                     { accion: 'TSLA', nombre: 'Tesla', cantidad: 100, variacion: '-1,03%', precioCompra: 1000.09, ultimoPrecio: 1000.01 }
@@ -403,7 +416,7 @@
                 movimientosBody.innerHTML = '';
                 movimientosData.forEach(movimiento => {
                     const fila = `
-                        <tr>
+                        <tr data-id="${movimiento.id}">
                             <td>${movimiento.id}</td>
                             <td>Compra</td>
                             <td>Cuenta Argentina</td>
@@ -412,6 +425,7 @@
                             <td>Completado</td>
                             <td>$${movimiento.precioUnitario.toFixed(2)}</td>
                             <td>$${movimiento.precioTotal.toFixed(2)}</td>
+                            <td><button class="btn-eliminar">X</button></td>
                         </tr>
                     `;
                     movimientosBody.innerHTML += fila;
@@ -434,7 +448,7 @@
                 }
             });
 
-            renderizarPortafolio(datosIniciales);
+            renderizarPortafolio(portafolioData);
             renderizarMovimientos();
 
             form.addEventListener('submit', (evento) => {
@@ -458,16 +472,16 @@
                 renderizarMovimientos();
 
                 const nuevoActivo = {
-                    accion: accion,
+                    accion: activo,
                     nombre: '',
                     cantidad: cantidad,
                     variacion: '0,00%',
                     precioCompra: precioUnitario,
-                    ultimoPrecio: ultimoPrecio
+                    ultimoPrecio: precioUnitario // Se usa el precio de compra como "último precio" al agregar
                 };
 
-                datosIniciales.push(nuevoActivo);
-                renderizarPortafolio(datosIniciales);
+                portafolioData.push(nuevoActivo);
+                renderizarPortafolio(portafolioData);
                 
                 // Guardar los datos después de cada cambio
                 guardarDatos();
@@ -475,9 +489,20 @@
                 form.reset();
                 modal.style.display = 'none';
             });
-                
-                form.reset();
-                modal.style.display = 'none';
+            
+            // Event listener para eliminar un movimiento
+            movimientosBody.addEventListener('click', (evento) => {
+                if (evento.target.classList.contains('btn-eliminar')) {
+                    const fila = evento.target.closest('tr');
+                    const idAEliminar = parseInt(fila.dataset.id, 10);
+                    
+                    // Filtrar el array para eliminar el movimiento
+                    movimientosData = movimientosData.filter(movimiento => movimiento.id !== idAEliminar);
+                    
+                    // Volver a renderizar las tablas y guardar los cambios
+                    renderizarMovimientos();
+                    guardarDatos();
+                }
             });
         });
     </script>
