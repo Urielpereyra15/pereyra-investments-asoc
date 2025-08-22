@@ -400,18 +400,10 @@
             
             let movimientosData = [];
             let movimientoId = 1; 
-            let portafolioData = [];
+            let portafolioData = []; // Se inicializa como un array vacío
             let movimientosLibres = []; 
 
             cargarDatos();
-
-            if (portafolioData.length === 0) {
-                 portafolioData = [
-                    { accion: 'YPFD', nombre: 'YPF', cantidad: 1, variacion: '-1,03%', precioCompra: 190, ultimoPrecio: 100 },
-                    { accion: 'MELI', nombre: 'Mercado Libre', cantidad: 10, variacion: '1,08%', precioCompra: 100, ultimoPrecio: 1000 },
-                    { accion: 'TSLA', nombre: 'Tesla', cantidad: 100, variacion: '-1,03%', precioCompra: 1000.09, ultimoPrecio: 1000.01 }
-                ];
-            }
 
             function renderizarPortafolio(datos) {
                 portafolioBody.innerHTML = '';
@@ -489,7 +481,7 @@
                 const nuevoMovimiento = {
                     id: idNuevo,
                     accion: accion,
-                    tipoMovimiento: tipoMovimiento, // <-- AGREGAMOS EL TIPO DE MOVIMIENTO
+                    tipoMovimiento: tipoMovimiento,
                     fecha: fecha,
                     cantidad: cantidad,
                     precioUnitario: precioUnitario,
@@ -521,12 +513,10 @@
                 } else if (tipoMovimiento === 'venta') {
                     if (activoExistente) {
                         activoExistente.cantidad -= cantidad;
-                        // Si la cantidad llega a 0 o menos, elimina la acción del portafolio
                         if (activoExistente.cantidad <= 0) {
                             portafolioData = portafolioData.filter(a => a.accion !== activoExistente.accion);
                         }
                     } else {
-                        // Opcional: Manejar el caso de que se intente vender un activo que no se tiene
                         alert('No se puede vender un activo que no existe en tu portafolio.');
                     }
                 }
