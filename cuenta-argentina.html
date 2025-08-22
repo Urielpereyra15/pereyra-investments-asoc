@@ -228,6 +228,16 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        
+        .radio-group {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+        
+        .radio-group label {
+            font-weight: normal;
+        }
 
         .modal-form button {
             padding: 10px;
@@ -325,6 +335,13 @@
             <span class="modal-close-btn">&times;</span>
             <h2 class="titulo-seccion">Agregar Activo</h2>
             <form id="form-nuevo-activo" class="modal-form">
+                 <div class="radio-group">
+                    <input type="radio" id="compra" name="tipo_movimiento" value="compra" checked>
+                    <label for="compra">Compra</label>
+                    <input type="radio" id="venta" name="tipo_movimiento" value="venta">
+                    <label for="venta">Venta</label>
+                </div>
+                
                 <label for="accion">Acción</label>
                 <input type="text" id="accion" name="accion" required>
 
@@ -354,7 +371,6 @@
             const portafolioBody = document.getElementById('portafolio-body');
             const movimientosBody = document.getElementById('movimientos-body');
 
-            // Función para guardar los datos en localStorage
             const guardarDatos = () => {
                 localStorage.setItem('portafolioData', JSON.stringify(portafolioData));
                 localStorage.setItem('movimientosData', JSON.stringify(movimientosData));
@@ -362,7 +378,6 @@
                 localStorage.setItem('movimientosLibres', JSON.stringify(movimientosLibres));
             };
 
-            // Función para cargar los datos desde localStorage
             const cargarDatos = () => {
                 const portafolioGuardado = localStorage.getItem('portafolioData');
                 const movimientosGuardados = localStorage.getItem('movimientosData');
@@ -384,11 +399,10 @@
             };
             
             let movimientosData = [];
-            let movimientoId = 1;
+            let movimientoId = 1; 
             let portafolioData = [];
-            let movimientosLibres = []; // Nuevo array para los IDs borrados
+            let movimientosLibres = []; 
 
-            // Cargar los datos al inicio de la página
             cargarDatos();
 
             if (portafolioData.length === 0) {
@@ -409,8 +423,8 @@
                             <td>${activo.accion}<br><span style="font-size:0.8em;">${activo.nombre}</span></td>
                             <td>${activo.cantidad}</td>
                             <td>${activo.variacion}</td>
-                            <td class="precio-compra">$${activo.precioCompra}</td>
-                            <td class="ultimo-precio">$${activo.ultimoPrecio}</td>
+                            <td class="precio-compra">$${activo.precioCompra.toFixed(2)}</td>
+                            <td class="ultimo-precio">$${activo.ultimoPrecio.toFixed(2)}</td>
                             <td>$${rendimiento.toFixed(2)}</td>
                         </tr>
                     `;
@@ -424,7 +438,7 @@
                     const fila = `
                         <tr data-id="${movimiento.id}">
                             <td>${movimiento.id}</td>
-                            <td>Compra</td>
+                            <td>${movimiento.tipoMovimiento === 'compra' ? 'Compra' : 'Venta'}</td>
                             <td>Cuenta Argentina</td>
                             <td>${movimiento.fecha}</td>
                             <td>${movimiento.cantidad}</td>
@@ -438,7 +452,6 @@
                 });
             }
 
-            // Lógica para mostrar y ocultar el modal
             abrirModalBtn.addEventListener('click', () => {
                 modal.style.display = 'flex';
             });
@@ -447,7 +460,6 @@
                 modal.style.display = 'none';
             });
 
-            // Cerrar el modal si se hace clic fuera del contenido
             window.addEventListener('click', (evento) => {
                 if (evento.target === modal) {
                     modal.style.display = 'none';
@@ -460,76 +472,98 @@
             form.addEventListener('submit', (evento) => {
                 evento.preventDefault();
                 
-                const activo = document.getElementById('accion').value.toUpperCase();
+                const accion = document.getElementById('accion').value.toUpperCase();
                 const cantidad = parseFloat(document.getElementById('cantidad').value);
                 const precioUnitario = parseFloat(document.getElementById('precio-unitario').value);
                 const precioTotal = parseFloat(document.getElementById('precio-total').value);
                 const fecha = document.getElementById('fecha').value;
+                const tipoMovimiento = document.querySelector('input[name="tipo_movimiento"]:checked').value;
 
                 let idNuevo;
                 if (movimientosLibres.length > 0) {
-                    // Si hay IDs libres, toma el más bajo y lo elimina del array
                     idNuevo = movimientosLibres.shift();
                 } else {
-                    // Si no hay IDs libres, usa el siguiente número consecutivo
                     idNuevo = movimientoId++;
                 }
 
                 const nuevoMovimiento = {
                     id: idNuevo,
-                    accion: accion, // <-- AGREGAMOS LA ACCIÓN AL OBJETO
+                    accion: accion,
+                    tipoMovimiento: tipoMovimiento, // <-- AGREGAMOS EL TIPO DE MOVIMIENTO
                     fecha: fecha,
                     cantidad: cantidad,
                     precioUnitario: precioUnitario,
                     precioTotal: precioTotal
                 };
-
                 movimientosData.unshift(nuevoMovimiento);
                 renderizarMovimientos();
-
+                
                 const activoExistente = portafolioData.find(a => a.accion === accion);
 
-                if (activoExistente) {
-                const nuevaCantidadTotal = activoExistente.cantidad + cantidad;
-                const nuevoPrecioTotal = (activoExistente.cantidad * activoExistente.precioCompra) + (cantidad * precioUnitario);
-                activoExistente.cantidad = nuevaCantidadTotal;
-                activoExistente.precioCompra = nuevoPrecioTotal / nuevaCantidadTotal;
-                activoExistente.ultimoPrecio = precioUnitario;
-            } else {
-
-                const nuevoActivo = {
-                    accion: activo,
-                    nombre: '',
-                    cantidad: cantidad,
-                    variacion: '0,00%',
-                    precioCompra: precioUnitario,
-                    ultimoPrecio: precioUnitario // Se usa el precio de compra como "último precio" al agregar
-                };
-                    
-                    portafolioData.push(nuevoActivo);
-               }     
-               
+                if (tipoMovimiento === 'compra') {
+                    if (activoExistente) {
+                        const nuevaCantidadTotal = activoExistente.cantidad + cantidad;
+                        const nuevoPrecioTotal = (activoExistente.cantidad * activoExistente.precioCompra) + (cantidad * precioUnitario);
+                        activoExistente.cantidad = nuevaCantidadTotal;
+                        activoExistente.precioCompra = nuevoPrecioTotal / nuevaCantidadTotal;
+                        activoExistente.ultimoPrecio = precioUnitario;
+                    } else {
+                        const nuevoActivo = {
+                            accion: accion,
+                            nombre: '',
+                            cantidad: cantidad,
+                            variacion: '0,00%',
+                            precioCompra: precioUnitario,
+                            ultimoPrecio: precioUnitario
+                        };
+                        portafolioData.push(nuevoActivo);
+                    }
+                } else if (tipoMovimiento === 'venta') {
+                    if (activoExistente) {
+                        activoExistente.cantidad -= cantidad;
+                        // Si la cantidad llega a 0 o menos, elimina la acción del portafolio
+                        if (activoExistente.cantidad <= 0) {
+                            portafolioData = portafolioData.filter(a => a.accion !== activoExistente.accion);
+                        }
+                    } else {
+                        // Opcional: Manejar el caso de que se intente vender un activo que no se tiene
+                        alert('No se puede vender un activo que no existe en tu portafolio.');
+                    }
+                }
+                
                 renderizarPortafolio(portafolioData);
                 guardarDatos();
                 form.reset();
                 modal.style.display = 'none';
             });
             
-            // Event listener para eliminar un movimiento
             movimientosBody.addEventListener('click', (evento) => {
                 if (evento.target.classList.contains('btn-eliminar')) {
                     const fila = evento.target.closest('tr');
                     const idAEliminar = parseInt(fila.dataset.id, 10);
                     
-                    // Agregar el ID borrado al array de IDs libres
+                    const movimientoEliminado = movimientosData.find(m => m.id === idAEliminar);
+                    
+                    if (movimientoEliminado) {
+                        const activoRelacionado = portafolioData.find(a => a.accion === movimientoEliminado.accion);
+                        if (activoRelacionado) {
+                            if (movimientoEliminado.tipoMovimiento === 'compra') {
+                                activoRelacionado.cantidad -= movimientoEliminado.cantidad;
+                                if (activoRelacionado.cantidad <= 0) {
+                                    portafolioData = portafolioData.filter(a => a.accion !== activoRelacionado.accion);
+                                }
+                            } else if (movimientoEliminado.tipoMovimiento === 'venta') {
+                                activoRelacionado.cantidad += movimientoEliminado.cantidad;
+                            }
+                        }
+                    }
+                    
                     movimientosLibres.push(idAEliminar);
-                    movimientosLibres.sort((a, b) => a - b); // Opcional: ordenar para usar siempre el más bajo
-
-                    // Filtrar el array para eliminar el movimiento
+                    movimientosLibres.sort((a, b) => a - b);
                     movimientosData = movimientosData.filter(movimiento => movimiento.id !== idAEliminar);
                     
-                    // Volver a renderizar las tablas y guardar los cambios
                     renderizarMovimientos();
+                    renderizarPortafolio(portafolioData);
                     guardarDatos();
                 }
             });
