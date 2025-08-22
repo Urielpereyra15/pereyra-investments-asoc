@@ -384,7 +384,7 @@
             };
             
             let movimientosData = [];
-            let movimientoId = 001;
+            let movimientoId = 1;
             let portafolioData = [];
             let movimientosLibres = []; // Nuevo array para los IDs borrados
 
@@ -477,6 +477,7 @@
 
                 const nuevoMovimiento = {
                     id: idNuevo,
+                    accion: accion, // <-- AGREGAMOS LA ACCIÓN AL OBJETO
                     fecha: fecha,
                     cantidad: cantidad,
                     precioUnitario: precioUnitario,
@@ -486,6 +487,16 @@
                 movimientosData.unshift(nuevoMovimiento);
                 renderizarMovimientos();
 
+                const activoExistente = portafolioData.find(a => a.accion === accion);
+
+                if (activoExistente) {
+                const nuevaCantidadTotal = activoExistente.cantidad + cantidad;
+                const nuevoPrecioTotal = (activoExistente.cantidad * activoExistente.precioCompra) + (cantidad * precioUnitario);
+                activoExistente.cantidad = nuevaCantidadTotal;
+                activoExistente.precioCompra = nuevoPrecioTotal / nuevaCantidadTotal;
+                activoExistente.ultimoPrecio = precioUnitario;
+            } else {
+
                 const nuevoActivo = {
                     accion: activo,
                     nombre: '',
@@ -494,13 +505,12 @@
                     precioCompra: precioUnitario,
                     ultimoPrecio: precioUnitario // Se usa el precio de compra como "último precio" al agregar
                 };
-
-                portafolioData.push(nuevoActivo);
+                    
+                    portafolioData.push(nuevoActivo);
+               }     
+               
                 renderizarPortafolio(portafolioData);
-                
-                // Guardar los datos después de cada cambio
                 guardarDatos();
-
                 form.reset();
                 modal.style.display = 'none';
             });
