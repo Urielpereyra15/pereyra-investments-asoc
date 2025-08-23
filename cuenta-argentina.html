@@ -254,64 +254,47 @@
         }
         
         @media (max-width: 600px) {
-    /* Hacer scroll horizontal en tablas */
-    .seccion-card table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    /* Ajustes de portafolio y activos */
-    .portafolio-activo-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .tabla-portafolio,
-    .activos-card {
-        width: 100%;
-    }
-
-    /* Botones ocupan todo el ancho */
-    .btn-agregar-activo,
-    .ver-mas-btn {
-        width: 100%;
-        padding: 8px 0;
-        font-size: 0.9em;
-    }
-
-    /* Imagen de gráfico más pequeña */
-    .grafico-activos {
-        width: 80px;
-        height: 80px;
-    }
-
-    /* Cabecera más compacta */
-    .encabezado h1 {
-        font-size: 1.8em;
-    }
-
-    /* Icono de menú más grande y a la izquierda */
-    .barra-menu {
-        top: 15px;
-        left: 15px;
-        width: 35px;
-        height: 35px;
-    }
-
-    /* Formulario modal más estrecho */
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    /* Radio buttons en columna */
-    .radio-group {
-        flex-direction: column;
-        gap: 5px;
-    }
-}
-
+            .seccion-card table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .portafolio-activo-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .tabla-portafolio,
+            .activos-card {
+                width: 100%;
+            }
+            .btn-agregar-activo,
+            .ver-mas-btn {
+                width: 100%;
+                padding: 8px 0;
+                font-size: 0.9em;
+            }
+            .grafico-activos {
+                width: 80px;
+                height: 80px;
+            }
+            .encabezado h1 {
+                font-size: 1.8em;
+            }
+            .barra-menu {
+                top: 15px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            .radio-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -334,6 +317,7 @@
                     <th>Precio de compra</th>
                     <th>Último precio</th>
                     <th>Rendimiento</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody id="portafolio-body">
@@ -418,6 +402,11 @@
             const portafolioBody = document.getElementById('portafolio-body');
             const movimientosBody = document.getElementById('movimientos-body');
 
+            // NUEVO: Configuración de la API de IOL
+            // IMPORTANTE: Reemplaza 'TU_TOKEN_AQUI' con tu token real.
+            const IOL_BEARER_TOKEN = 'TU_TOKEN_AQUI'; 
+            const IOL_API_URL = 'https://api.invertironline.com/api/v2/cotizaciones/';
+
             const guardarDatos = () => {
                 localStorage.setItem('portafolioData', JSON.stringify(portafolioData));
                 localStorage.setItem('movimientosData', JSON.stringify(movimientosData));
@@ -447,11 +436,41 @@
             
             let movimientosData = [];
             let movimientoId = 1; 
-            let portafolioData = []; // Se inicializa como un array vacío
+            let portafolioData = [];
             let movimientosLibres = []; 
 
             cargarDatos();
+            
+            // NUEVO: Función para obtener y actualizar precios de la API de IOL
+            const actualizarPreciosDeAPI = async () => {
+                if (!IOL_BEARER_TOKEN || IOL_BEARER_TOKEN === 'TU_TOKEN_AQUI') {
+                    console.warn('TOKEN de API no configurado o es el token de ejemplo. No se actualizarán los precios automáticamente.');
+                    return;
+                }
 
+                for (const activo of portafolioData) {
+                    try {
+                        const response = await fetch(`${IOL_API_URL}todos/${activo.accion}`, {
+                            headers: {
+                                'Authorization': `Bearer ${IOL_BEARER_TOKEN}`
+                            }
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data && data.valores && data.valores.length > 0) {
+                                const cotizacion = data.valores[0];
+                                activo.ultimoPrecio = cotizacion.ultimoPrecio;
+                                activo.variacion = `${cotizacion.variacionPorcentual.toFixed(2)}%`;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error al obtener datos de la API para', activo.accion, error);
+                    }
+                }
+                renderizarPortafolio(portafolioData);
+                guardarDatos();
+            };
+            
             function renderizarPortafolio(datos) {
                 portafolioBody.innerHTML = '';
                 datos.forEach(activo => {
@@ -465,6 +484,7 @@
                             <td class="precio-compra">$${activo.precioCompra.toFixed(2)}</td>
                             <td class="ultimo-precio">$${activo.ultimoPrecio.toFixed(2)}</td>
                             <td>$${rendimiento.toFixed(2)}</td>
+                            <td></td>
                         </tr>
                     `;
                     portafolioBody.innerHTML += fila;
@@ -505,7 +525,8 @@
                 }
             });
 
-            renderizarPortafolio(portafolioData);
+            // Llamada inicial para cargar los datos y actualizar precios
+            actualizarPreciosDeAPI();
             renderizarMovimientos();
 
             form.addEventListener('submit', (evento) => {
