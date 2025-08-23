@@ -254,17 +254,65 @@
         }
         
         @media (max-width: 600px) {
-            .portafolio-activo-container {
-                flex-direction: column;
-            }
-            .tabla-portafolio, .activos-card {
-                width: 100%;
-            }
-            .tabla-movimientos th, .tabla-movimientos td {
-                padding: 5px;
-                font-size: 0.8em;
-            }
-        }
+    /* Contenedor de portafolio y activos en columna */
+    .portafolio-activo-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Tablas y tarjetas ocupan todo el ancho */
+    .tabla-portafolio,
+    .activos-card {
+        width: 100%;
+    }
+
+    /* Tablas de movimientos más compactas */
+    .tabla-movimientos th,
+    .tabla-movimientos td {
+        padding: 5px;
+        font-size: 0.75em;
+    }
+
+    /* Botones ocupan todo el ancho */
+    .btn-agregar-activo,
+    .ver-mas-btn {
+        width: 100%;
+        padding: 8px 0;
+        font-size: 0.9em;
+    }
+
+    /* Imagen de gráfico más pequeña */
+    .grafico-activos {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Cabecera más compacta */
+    .encabezado h1 {
+        font-size: 1.8em;
+    }
+
+    /* Icono de menú más grande y a la izquierda */
+    .barra-menu {
+        top: 15px;
+        left: 15px;
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Formulario modal más estrecho */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    /* Radio buttons en columna */
+    .radio-group {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
     </style>
 </head>
 <body>
