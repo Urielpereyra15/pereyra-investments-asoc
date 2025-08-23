@@ -254,23 +254,22 @@
         }
         
         @media (max-width: 600px) {
-    /* Contenedor de portafolio y activos en columna */
+    /* Hacer scroll horizontal en tablas */
+    .seccion-card table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* Ajustes de portafolio y activos */
     .portafolio-activo-container {
         flex-direction: column;
         gap: 15px;
     }
 
-    /* Tablas y tarjetas ocupan todo el ancho */
     .tabla-portafolio,
     .activos-card {
         width: 100%;
-    }
-
-    /* Tablas de movimientos más compactas */
-    .tabla-movimientos th,
-    .tabla-movimientos td {
-        padding: 5px;
-        font-size: 0.75em;
     }
 
     /* Botones ocupan todo el ancho */
