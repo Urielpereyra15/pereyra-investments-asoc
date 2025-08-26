@@ -404,7 +404,7 @@
 
             // NUEVO: Configuración de la API de IOL
             // IMPORTANTE: Reemplaza 'TU_TOKEN_AQUI' con tu token real.
-            const IOL_BEARER_TOKEN = 'TU_TOKEN_AQUI'; 
+            const IOL_BEARER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJzdWIiOiIzMTk0OTQyIiwiSUQiOiIzMTk0OTQyIiwianRpIjoiYjIxZjVlNGEtOGE2Ny00OTc5LTkyMTMtNGIxNGExMjY5ZGFhIiwiY29uc3VtZXJfdHlwZSI6IjEiLCJ0aWVuZV9jdWVudGEiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYnVyc2F0aWwiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYXBpIjoiVHJ1ZSIsInRpZW5lX1R5QyI6IlRydWUiLCJuYmYiOjE3NTYxNjc1MDQsImV4cCI6MTc1NjE2ODQwNCwiaWF0IjoxNzU2MTY3NTA0LCJpc3MiOiJJT0xPYXV0aFNlcnZlciIsImF1ZCI6IklPTE9hdXRoU2VydmVyIn0.XR_jZh8MzNlViTPPt6mMhml5HflLs5fJX8uh7zDm6ZDJ72IwHs8PxmoTyyOr4k7nV2PUJeMXLMqF9G4ys88cX3uLuo1-0Sqqw9jPMgTkpRZavSU_wms4FmIAQgy-kEqUyUAxxNW9ydWlwAmjS7RhoqDsPhLu2OwqaDHkJzqobbQi-C4mANzWCOJh8k0kvMV81YEUOozB725brK2DBL3tPbN9fIwLArD5AyTirFkxzxEwmC-EnF18saFmShOez8uRl8OJtXSwYl2o9KsiPrN4DASe3bqX-VhwPy7boN8mxe6vcoCNdH7qYCDDCkZJgQ3n7KBK7Qni9boItK5Au-UxBw'; 
             const IOL_API_URL = 'https://api.invertironline.com/api/v2/cotizaciones/';
 
             const guardarDatos = () => {
@@ -443,7 +443,7 @@
             
             // NUEVO: Función para obtener y actualizar precios de la API de IOL
             const actualizarPreciosDeAPI = async () => {
-                if (!IOL_BEARER_TOKEN || IOL_BEARER_TOKEN === 'TU_TOKEN_AQUI') {
+                if (!IOL_BEARER_TOKEN || IOL_BEARER_TOKEN === 'eyJhbGciOiJSUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJzdWIiOiIzMTk0OTQyIiwiSUQiOiIzMTk0OTQyIiwianRpIjoiYjIxZjVlNGEtOGE2Ny00OTc5LTkyMTMtNGIxNGExMjY5ZGFhIiwiY29uc3VtZXJfdHlwZSI6IjEiLCJ0aWVuZV9jdWVudGEiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYnVyc2F0aWwiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYXBpIjoiVHJ1ZSIsInRpZW5lX1R5QyI6IlRydWUiLCJuYmYiOjE3NTYxNjc1MDQsImV4cCI6MTc1NjE2ODQwNCwiaWF0IjoxNzU2MTY3NTA0LCJpc3MiOiJJT0xPYXV0aFNlcnZlciIsImF1ZCI6IklPTE9hdXRoU2VydmVyIn0.XR_jZh8MzNlViTPPt6mMhml5HflLs5fJX8uh7zDm6ZDJ72IwHs8PxmoTyyOr4k7nV2PUJeMXLMqF9G4ys88cX3uLuo1-0Sqqw9jPMgTkpRZavSU_wms4FmIAQgy-kEqUyUAxxNW9ydWlwAmjS7RhoqDsPhLu2OwqaDHkJzqobbQi-C4mANzWCOJh8k0kvMV81YEUOozB725brK2DBL3tPbN9fIwLArD5AyTirFkxzxEwmC-EnF18saFmShOez8uRl8OJtXSwYl2o9KsiPrN4DASe3bqX-VhwPy7boN8mxe6vcoCNdH7qYCDDCkZJgQ3n7KBK7Qni9boItK5Au-UxBw') {
                     console.warn('TOKEN de API no configurado o es el token de ejemplo. No se actualizarán los precios automáticamente.');
                     return;
                 }
