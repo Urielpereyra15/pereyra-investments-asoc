@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuenta de Argentina</title>
+    <title>Pereyra Investments & Asoc.</title>
     
-<style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -317,6 +317,7 @@
                     <th>Precio de compra</th>
                     <th>Último precio</th>
                     <th>Rendimiento</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody id="portafolio-body">
@@ -363,31 +364,33 @@
     <div id="modal-agregar-activo" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
-            <h2 class="titulo-seccion">Agregar Activo</h2>
+            <h2 style="text-align: center;">Agregar activo</h2>
             <form id="form-nuevo-activo" class="modal-form">
-                 <div class="radio-group">
-                    <input type="radio" id="compra" name="tipo_movimiento" value="compra" checked>
-                    <label for="compra">Compra</label>
-                    <input type="radio" id="venta" name="tipo_movimiento" value="venta">
-                    <label for="venta">Venta</label>
+                <label for="accion">Símbolo (ej. YPFD, MELI, TSLA):</label>
+                <input type="text" id="accion" name="accion" required>
+                
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="tipo_movimiento" value="compra" checked> Compra
+                    </label>
+                    <label>
+                        <input type="radio" name="tipo_movimiento" value="venta"> Venta
+                    </label>
                 </div>
                 
-                <label for="accion">Acción</label>
-                <input type="text" id="accion" name="accion" required>
-
-                <label for="cantidad">Cantidad</label>
-                <input type="number" id="cantidad" name="cantidad" required>
-
-                <label for="precio-unitario">Precio Unitario</label>
-                <input type="number" step="0.01" id="precio-unitario" name="precio-unitario" required>
-
-                <label for="precio-total">Precio Total</label>
-                <input type="number" step="0.01" id="precio-total" name="precio-total" required>
-
-                <label for="fecha">Fecha</label>
-                <input type="date" id="fecha" name="fecha" required>
+                <label for="cantidad">Cantidad:</label>
+                <input type="number" id="cantidad" name="cantidad" required min="1">
                 
-                <button type="submit">Agregar Activo</button>
+                <label for="precio-unitario">Precio unitario:</label>
+                <input type="number" id="precio-unitario" name="precio-unitario" step="0.01" required>
+
+                <label for="precio-total">Precio total (con comisiones):</label>
+                <input type="number" id="precio-total" name="precio-total" step="0.01" required>
+                
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" required>
+
+                <button type="submit">Agregar</button>
             </form>
         </div>
     </div>
@@ -401,10 +404,17 @@
             const portafolioBody = document.getElementById('portafolio-body');
             const movimientosBody = document.getElementById('movimientos-body');
 
-            // NUEVO: Configuración de la API de IOL
-            // IMPORTANTE: Reemplaza 'TU_TOKEN_AQUI' con tu token real.
-            const IOL_BEARER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJzdWIiOiIzMTk0OTQyIiwiSUQiOiIzMTk0OTQyIiwianRpIjoiMTI4ZDFlYWUtYTVkMS00ZjcxLTlmZTAtYTk4OGFmMjliNGZmIiwiY29uc3VtZXJfdHlwZSI6IjEiLCJ0aWVuZV9jdWVudGEiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYnVyc2F0aWwiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYXBpIjoiVHJ1ZSIsInRpZW5lX1R5QyI6IlRydWUiLCJuYmYiOjE3NTYxNjgxMDcsImV4cCI6MTc1NjE2OTAwNywiaWF0IjoxNzU2MTY4MTA3LCJpc3MiOiJJT0xPYXV0aFNlcnZlciIsImF1ZCI6IklPTE9hdXRoU2VydmVyIn0.XJPgwZZQSVecqvp1W4m5-Iru-9cDpiws-TKziTA4SaeY1DCeEnsGP3SJZBcns1Zb1rHNjibUUuUOMNX5Lf_SvSCOInPF_ankNuNtxpamWF6g3nv_13aNq5fDEa2d6pqIzCWEO1rlOwKROsP_eh8doKQBTURnHHcb9XmnZX85BGILCkBVF_XEZ0SIRFt55ENxZJHXgmlxongEQ96Ikl9tTfno1BN6pSHQDEoUlppOm8sUG2IFDJLl7D_wIRk4nEWyeTZ31id0Jj3OW9sbAibE285fGFsL0_jUnbqsDfg76ysIemRzZAOcJ3xP0PaQJQ2crLXRI7nlpYAEshHz72a8rg'; 
+            // Configuración de la API de IOL - REEMPLAZA ESTO
+            const CLIENT_ID = 'pehuajouripereyra777@gmail.com';
+            const CLIENT_SECRET = '$Uriel20178';
+
             const IOL_API_URL = 'https://api.invertironline.com/api/v2/cotizaciones/';
+            const IOL_TOKEN_URL = 'https://api.invertironline.com/token';
+
+            let movimientosData = [];
+            let movimientoId = 1; 
+            let portafolioData = [];
+            let movimientosLibres = []; 
 
             const guardarDatos = () => {
                 localStorage.setItem('portafolioData', JSON.stringify(portafolioData));
@@ -432,19 +442,40 @@
                     movimientosLibres = JSON.parse(libresGuardados);
                 }
             };
-            
-            let movimientosData = [];
-            let movimientoId = 1; 
-            let portafolioData = [];
-            let movimientosLibres = []; 
 
             cargarDatos();
             
-            // NUEVO: Función para obtener y actualizar precios de la API de IOL
             const actualizarPreciosDeAPI = async () => {
-                if (!IOL_BEARER_TOKEN || IOL_BEARER_TOKEN === 'eyJhbGciOiJSUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJzdWIiOiIzMTk0OTQyIiwiSUQiOiIzMTk0OTQyIiwianRpIjoiMTI4ZDFlYWUtYTVkMS00ZjcxLTlmZTAtYTk4OGFmMjliNGZmIiwiY29uc3VtZXJfdHlwZSI6IjEiLCJ0aWVuZV9jdWVudGEiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYnVyc2F0aWwiOiJUcnVlIiwidGllbmVfcHJvZHVjdG9fYXBpIjoiVHJ1ZSIsInRpZW5lX1R5QyI6IlRydWUiLCJuYmYiOjE3NTYxNjgxMDcsImV4cCI6MTc1NjE2OTAwNywiaWF0IjoxNzU2MTY4MTA3LCJpc3MiOiJJT0xPYXV0aFNlcnZlciIsImF1ZCI6IklPTE9hdXRoU2VydmVyIn0.XJPgwZZQSVecqvp1W4m5-Iru-9cDpiws-TKziTA4SaeY1DCeEnsGP3SJZBcns1Zb1rHNjibUUuUOMNX5Lf_SvSCOInPF_ankNuNtxpamWF6g3nv_13aNq5fDEa2d6pqIzCWEO1rlOwKROsP_eh8doKQBTURnHHcb9XmnZX85BGILCkBVF_XEZ0SIRFt55ENxZJHXgmlxongEQ96Ikl9tTfno1BN6pSHQDEoUlppOm8sUG2IFDJLl7D_wIRk4nEWyeTZ31id0Jj3OW9sbAibE285fGFsL0_jUnbqsDfg76ysIemRzZAOcJ3xP0PaQJQ2crLXRI7nlpYAEshHz72a8rg') {
-                    console.warn('TOKEN de API no configurado o es el token de ejemplo. No se actualizarán los precios automáticamente.');
-                    return;
+                let IOL_BEARER_TOKEN = localStorage.getItem('iol_token');
+                let tokenExpiracion = localStorage.getItem('iol_token_expiracion');
+                const ahora = Date.now();
+
+                if (!IOL_BEARER_TOKEN || !tokenExpiracion || (ahora > parseInt(tokenExpiracion, 10) - 30000)) {
+                    console.log("Obteniendo un nuevo token de la API de IOL...");
+                    try {
+                        const tokenResponse = await fetch(IOL_TOKEN_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&scope=read`
+                        });
+
+                        if (!tokenResponse.ok) {
+                            throw new Error('Error al obtener el token: ' + tokenResponse.statusText);
+                        }
+
+                        const tokenData = await tokenResponse.json();
+                        IOL_BEARER_TOKEN = tokenData.access_token;
+                        
+                        localStorage.setItem('iol_token', IOL_BEARER_TOKEN);
+                        localStorage.setItem('iol_token_expiracion', ahora + tokenData.expires_in * 1000);
+
+                        console.log("¡Token de la API obtenido con éxito!");
+                    } catch (error) {
+                        console.error('Error al obtener un token nuevo:', error);
+                        return;
+                    }
                 }
 
                 for (const activo of portafolioData) {
@@ -454,6 +485,7 @@
                                 'Authorization': `Bearer ${IOL_BEARER_TOKEN}`
                             }
                         });
+
                         if (response.ok) {
                             const data = await response.json();
                             if (data && data.valores && data.valores.length > 0) {
@@ -461,15 +493,18 @@
                                 activo.ultimoPrecio = cotizacion.ultimoPrecio;
                                 activo.variacion = `${cotizacion.variacionPorcentual.toFixed(2)}%`;
                             }
+                        } else {
+                            console.error(`Error al obtener datos de la API para ${activo.accion}: ${response.statusText}`);
                         }
                     } catch (error) {
-                        console.error('Error al obtener datos de la API para', activo.accion, error);
+                        console.error('Error al conectar con la API para', activo.accion, error);
                     }
                 }
+                
                 renderizarPortafolio(portafolioData);
                 guardarDatos();
             };
-            
+
             function renderizarPortafolio(datos) {
                 portafolioBody.innerHTML = '';
                 datos.forEach(activo => {
@@ -524,11 +559,7 @@
                 }
             });
 
-            // Llamada inicial para cargar los datos y actualizar precios
-            actualizarPreciosDeAPI();
-            renderizarMovimientos();
-
-            form.addEventListener('submit', (evento) => {
+            form.addEventListener('submit', async (evento) => {
                 evento.preventDefault();
                 
                 const accion = document.getElementById('accion').value.toUpperCase();
@@ -565,13 +596,12 @@
                         const nuevoPrecioTotal = (activoExistente.cantidad * activoExistente.precioCompra) + (cantidad * precioUnitario);
                         activoExistente.cantidad = nuevaCantidadTotal;
                         activoExistente.precioCompra = nuevoPrecioTotal / nuevaCantidadTotal;
-                        activoExistente.ultimoPrecio = precioUnitario;
                     } else {
                         const nuevoActivo = {
                             accion: accion,
                             nombre: '',
                             cantidad: cantidad,
-                            variacion: '0,00%',
+                            variacion: '0.00%',
                             precioCompra: precioUnitario,
                             ultimoPrecio: precioUnitario
                         };
@@ -588,13 +618,13 @@
                     }
                 }
                 
-                renderizarPortafolio(portafolioData);
+                await actualizarPreciosDeAPI();
                 guardarDatos();
                 form.reset();
                 modal.style.display = 'none';
             });
             
-            movimientosBody.addEventListener('click', (evento) => {
+            movimientosBody.addEventListener('click', async (evento) => {
                 if (evento.target.classList.contains('btn-eliminar')) {
                     const fila = evento.target.closest('tr');
                     const idAEliminar = parseInt(fila.dataset.id, 10);
@@ -620,11 +650,19 @@
                     movimientosData = movimientosData.filter(movimiento => movimiento.id !== idAEliminar);
                     
                     renderizarMovimientos();
-                    renderizarPortafolio(portafolioData);
+                    await actualizarPreciosDeAPI();
                     guardarDatos();
                 }
             });
+
+            // Llamada inicial al cargar la página y luego cada 30 segundos
+            actualizarPreciosDeAPI();
+            renderizarMovimientos();
+
+            // Actualiza los precios cada 30 segundos
+            setInterval(actualizarPreciosDeAPI, 30000);
         });
     </script>
+
 </body>
 </html>
